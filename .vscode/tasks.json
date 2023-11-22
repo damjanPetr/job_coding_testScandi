@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "RUN DEV",
+      "command": "cd frontend && npm run dev",
+      "type": "shell",
+      "args": [],
+      "problemMatcher": ["$tsc"],
+      "runOptions": { "runOn": "folderOpen" },
+      "presentation": {
+        "reveal": "always"
+      }
+    }
+    // {
+    //   "label": "sass",
+    //   "command": "cd frontend && npx sass --watch src/style.scss src/index.css",
+    //   "type": "shell",
+    //   "args": [],
+    //   "problemMatcher": ["$tsc"],
+    //   "runOptions": { "runOn": "folderOpen" },
+    //   "presentation": {
+    //     "reveal": "always"
+    //   }
+    // }
+  ]
+}

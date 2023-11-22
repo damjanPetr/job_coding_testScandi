@@ -1,0 +1,18 @@
+.product {
+  padding: 16px;
+  border: 1px solid #000;
+  width: 250px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  input[type="checkbox"] {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+  }
+  h3 {
+    background: blue;
+  }
+}
