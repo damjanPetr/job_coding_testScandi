@@ -6,23 +6,24 @@ type Props = {
   price: string;
   data: {
     size: string;
-    weigth: string;
+    weight: string;
     dimensions: string;
   };
 };
+
 function Product({ sku, name, price, data }: Props) {
   return (
-    <div className="product">
+    <form className="product">
       <input type="checkbox" id="delete-checkbox" />
       <div className="inner_container">
         <h3>{name}</h3>
         <p>{sku}</p>
         <p>{price}</p>
         <p>{data.size}</p>
-        <p>{data.weigth}</p>
+        <p>{data.weight}</p>
         <p>{data.dimensions}</p>
       </div>
-    </div>
+    </form>
   );
 }
 

@@ -17,7 +17,8 @@
       gap: 20px;
       align-items: center;
       background: lavender;
-      button {
+      button,
+      a {
         transition: transform 0.3s ease;
         border-radius: 2px;
         border: 1px solid #000;
@@ -28,10 +29,9 @@
           transform: scale(1.1);
         }
       }
-      .addBtn {
-        padding: 10px 10px;
+      #delete-product-btn {
       }
-      .massDelBtn {
+      #add-product-btn {
       }
     }
   }

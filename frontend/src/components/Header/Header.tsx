@@ -1,18 +1,37 @@
+import { Link } from "react-router-dom";
 import "./Header.scss";
 
-function Header() {
+function Header({
+  title,
+  showFormBtns,
+}: {
+  title: string;
+  showFormBtns?: boolean;
+}) {
   return (
     <div className="header">
       <div className="inner_container">
         <div className="">
-          <h1>Product List</h1>
+          <h1>{title}</h1>
         </div>
         {/* Buttons */}
         <div className="buttons">
-          <button className="addBtn">Add</button>
-          <button id="delete-product-btn" className="massDelBtn">
-            Mass Delete
-          </button>
+          {!showFormBtns && (
+            <>
+              <Link to={"/add-product"} id="add-product-btn">
+                Add
+              </Link>
+              <button id="delete-product-btn" className="massDelBtn">
+                Mass Delete
+              </button>
+            </>
+          )}
+          {showFormBtns && (
+            <>
+              <button>Save</button>
+              <Link to={"/"}>Cancel</Link>
+            </>
+          )}
         </div>
       </div>
     </div>

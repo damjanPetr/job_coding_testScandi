@@ -1,6 +1,9 @@
-<?php 
+<?php
+require __DIR__ . '/database.php';
 
 
-echo "paly";
+
+
 
 ?>
+

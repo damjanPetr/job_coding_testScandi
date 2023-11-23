@@ -1,0 +1,38 @@
+.add-product-page {
+  #product_form {
+    padding: 16px;
+  }
+  .input-container {
+    & > div {
+      margin-top: 10px;
+    }
+    .inner {
+      display: flex;
+      // align-items: center;
+      justify-content: space-between;
+    }
+  }
+  input {
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    width: 80%;
+  }
+  .select-container {
+    display: flex;
+    align-items: center;
+    .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  .type-container {
+    input {
+      margin-top: 10px;
+    }
+    p {
+      margin-top: 20px;
+    }
+  }
+}
