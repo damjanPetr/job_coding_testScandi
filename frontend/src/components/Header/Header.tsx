@@ -28,7 +28,14 @@ function Header({
           )}
           {showFormBtns && (
             <>
-              <button>Save</button>
+              <button
+                onClick={() => {
+                  const form = document.querySelector("#product_form");
+                  form?.dispatchEvent(new Event("submit", { bubbles: true }));
+                }}
+              >
+                Save
+              </button>
               <Link to={"/"}>Cancel</Link>
             </>
           )}

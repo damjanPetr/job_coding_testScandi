@@ -3,9 +3,31 @@ import "./AddProductPage.scss";
 function AddProductPage() {
   const [type, setType] = useState<"dvd" | "furniture" | "book">("book");
 
+  async function handleSubmit(e: HTMLFormElement) {
+    const formData = Object.fromEntries(new FormData(e));
+
+    const response = await fetch(
+      "http://localhost:80/job_coding_test/backend/api/ProductApi.php",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          productProperties: formData,
+          attributes: [],
+        }),
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+  }
   return (
     <div className="add-product-page">
-      <form action="" method="" id="product_form">
+      <form
+        action=""
+        id="product_form"
+        onSubmit={(e) => {
+          handleSubmit(e.currentTarget);
+        }}
+      >
         <div className="input-container">
           <div className="inner">
             <label htmlFor="sku">SKU</label>
@@ -35,7 +57,7 @@ function AddProductPage() {
               <option value="furniture">Furniture</option>
               <option value="dvd">DVD</option>
             </select>
-            <svg
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
               height="32"
@@ -45,7 +67,7 @@ function AddProductPage() {
                 fill="currentColor"
                 d="M8.12 9.29L12 13.17l3.88-3.88a.996.996 0 1 1 1.41 1.41l-4.59 4.59a.996.996 0 0 1-1.41 0L6.7 10.7a.996.996 0 0 1 0-1.41c.39-.38 1.03-.39 1.42 0z"
               />
-            </svg>
+            </svg> */}
           </div>
         </div>
         <div className="type-container">
