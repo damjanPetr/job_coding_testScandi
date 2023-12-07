@@ -19,10 +19,17 @@ function Header({
           {!showFormBtns && (
             <>
               <Link to={"/add-product"} id="add-product-btn">
-                Add
+                ADD
               </Link>
-              <button id="delete-product-btn" className="massDelBtn">
-                Mass Delete
+              <button
+                id="delete-product-btn"
+                className="massDelBtn"
+                onClick={() => {
+                  const form = document.querySelector("#all_products_form");
+                  form?.dispatchEvent(new Event("submit", { bubbles: true }));
+                }}
+              >
+                MASS DELETE
               </button>
             </>
           )}

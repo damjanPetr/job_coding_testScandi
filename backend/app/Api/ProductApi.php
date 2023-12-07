@@ -1,21 +1,16 @@
 <?php
+require_once __DIR__ . '/../../autoloader.php';
 
-header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Origin: " . ORIGIN);
+
+header('Access-Control-Allow-Methods: GET, POST, DELETE');
 header('content-type: application/json; charset=utf-8');
 
-require_once __DIR__ . '/../../autoloader.php';
 
 use Helpers\Database;
 
-
 class Product_Api
 {
-    public function createProduct($sku, $name, $price, $attributes, $type)
-    {
-        $product = new Product($sku, $name, $price, $attributes, $type);
-        $product->store();
-        return $product;
-    }
     public function getAllProducts()
     {
         $db = new Database();
@@ -23,61 +18,79 @@ class Product_Api
         $query = $conn->query("SELECT * FROM products");
         $query->execute();
 
-
         $products = $query->fetchAll();
         echo json_encode($products);
 
+    }
+    public function deleteAllProducts($products_array)
+    {
+        if (empty($products_array)) {
+            echo json_encode(["message" => "No products to delete"]);
 
+        } else {
+            $db = new Database();
+            $conn = $db->getConnection();
+            $query = $conn->query("DELETE FROM products WHERE id IN (" . implode(',', $products_array) . ");");
 
-        $getAttributesSql = "SELECT (product_id, attribute_name, attribute_value) 
-        FROM product_attributes
-        WHERE product_id IN ()
-        ";
-        // foreach ($products as $product) {
-        //     $item = new Product(
-        //         $product['sku'],
-        //         $product['name'],
-        //         $product['price'],
-        //         $product['attributes'],
-        //         $product['type'],
-        //     );
-        // }
-
+            if ($query->execute()) {
+                echo json_encode(["message" => "Products deleted successfully"]);
+            } else {
+                http_response_code(404);
+            }
+        }
 
     }
 
     public function handleRequest()
     {
-        $method = $_SERVER['REQUEST_METHOD'];
-        $path = $_SERVER['REQUEST_URI'];
-        // $data = file_get_contents('php://input');
+        $data = json_decode(file_get_contents('php://input'), true);
+        $action = $data['action'];
 
-
-
-        switch ($method) {
+        switch ($action) {
             case 'GET':
                 $this->getAllProducts();
                 break;
             case 'POST':
-                $data = json_decode(file_get_contents('php://input'), true);
 
-                $props = $data['productProperties'];
-                $attributes = $data['attributes'];
+                $properties = $data['productProperties'];
 
-                $sku = $props['name'];
-                $name = $props['sku'];
-                $price = $props['price'];
-                $type = $props['type'];
 
-                // $this->createProduct($sku, $name, $price, $attributes, $type);
+                if (class_exists($class = "Models\\" . ucfirst($properties['type']))) {
+                    $product = new $class($properties);
+                    try {
+                        if ($product->checkUniqueSKU()) {
+                            $product->validator->addError("sku", "SKU already exists");
+                        }
+
+                        $product->validate();
+                        if ($product->validator->isValid()) {
+                            $product->save();
+                            echo json_encode(["message" => "Product saved successfully"]);
+                            http_response_code(201);
+                        } else {
+                            echo json_encode(["errors" => $product->validator->getErrors()]);
+                        }
+
+                    } catch (\Throwable $e) {
+                        echo json_encode($e->getMessage());
+                        http_response_code(400);
+                    }
+                } else {
+                    http_response_code(400);
+                }
+                ;
+                break;
+            case 'DELETE':
+                $this->deleteAllProducts($data['products_id_array']);
                 break;
             default:
-                http_response_code(405);
                 break;
         }
     }
 }
 
-$api = new Product_Api();
-$api->handleRequest();
 
+$api = new Product_Api();
+
+
+$api->handleRequest($_SERVER['REQUEST_METHOD']);

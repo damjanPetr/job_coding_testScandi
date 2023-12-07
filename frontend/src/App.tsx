@@ -1,5 +1,4 @@
 import Header from "./components/Header/Header";
-import { Outlet } from "react-router-dom";
 
 function App({
   heading,
@@ -15,7 +14,9 @@ function App({
       <Header title={heading} showFormBtns={showFormBtns} />
       <main className="">{children}</main>
       <footer>
-        <p>Scandiweb Test Assignment</p>
+        <div className="inner_container">
+          <p>Scandiweb Test Assignment</p>
+        </div>
       </footer>
     </div>
   );

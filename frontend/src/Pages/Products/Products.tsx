@@ -1,56 +1,78 @@
+import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import Product from "../../components/Product/Product";
 import "./Products.scss";
-import { useEffect, useState } from "react";
+
 export async function productsLoader() {
   const response = await fetch(
-    "http://localhost:80/job_coding_test/backend/api/ProductApi.php",
+    import.meta.env.VITE_BACKEND_URL + "ProductApi.php",
     {
-      method: "GET",
+      method: "POST",
+
+      body: JSON.stringify({
+        action: "GET",
+      }),
     }
   );
   const data = await response.json();
-  console.log(data);
+  return data;
 }
 
+export type Product_Props = {
+  id: number;
+  sku: number;
+  name: string;
+  price: string;
+  attribute_name: string;
+  attribute_value: string;
+  attribute_prop: string | null;
+};
 function Products() {
-  type Product = {
-    sku: string;
-    name: string;
-    price: string;
-    data: {
-      size: string;
-      weight: string;
-      dimensions: string;
-    };
-  };
+  const data = useLoaderData() as Product_Props[];
 
-  const data = useLoaderData() as { products: Product[] };
-  // const [products, setProducts] = useState<Product[]>();
+  const [products, setProducts] = useState<Product_Props[]>(data);
 
   return (
     <div className="products-page">
-      <div className="products_container">
-        {data.products ? (
-          data.products.map((item) => {
-            return (
-              <Product
-                key={item.sku}
-                sku={item.sku}
-                name={item.name}
-                price={item.price}
-                data={{
-                  size: item.data.size,
-                  weight: item.data.weight,
-                  dimensions: item.data.dimensions,
-                }}
-              />
+      <form
+        id="all_products_form"
+        action=""
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const formdata = new FormData(e.currentTarget);
+          const productIds = [...formdata.keys()];
+          const response = await fetch(
+            import.meta.env.VITE_BACKEND_URL + "ProductApi.php",
+            {
+              method: "POST",
+              body: JSON.stringify({
+                products_id_array: productIds,
+                action: "DELETE",
+              }),
+            }
+          );
+          const data = await response.json();
+
+          if (data) {
+            setProducts(
+              products.filter(
+                (item: Product_Props) =>
+                  !productIds.includes(item.id.toString())
+              )
             );
-          })
-        ) : (
-          <p>No Products in the Database</p>
-        )}
-      </div>
+          }
+        }}
+      >
+        <div className="products_container">
+          {products.length > 0 ? (
+            products.map((item) => {
+              return <Product data={item} key={item.id} />;
+            })
+          ) : (
+            <p>No products currently in the Database</p>
+          )}
+        </div>
+      </form>
     </div>
   );
 }

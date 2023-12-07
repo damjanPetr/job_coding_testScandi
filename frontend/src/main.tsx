@@ -12,9 +12,7 @@ const router = createBrowserRouter([
     loader: async () => {
       const products = await productsLoader();
 
-      console.log("🚀 ✔ file: main.tsx:15 ✔ loader: ✔ products:", products);
-
-      return { products };
+      return products;
     },
     element: (
       <App heading="Products List" showFormBtns={false}>

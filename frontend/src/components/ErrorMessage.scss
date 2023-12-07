@@ -1,0 +1,17 @@
+.error_message {
+  transition: all 150ms ease;
+  position: absolute;
+  padding: 4px;
+
+  font-weight: 600;
+  top: 0;
+  left: calc(100% + 30px);
+  background-color: peachpuff;
+  border-radius: 8px;
+  font-size: 14px;
+  width: max-content;
+  p {
+    margin: 0 !important;
+  }
+  color: red;
+}

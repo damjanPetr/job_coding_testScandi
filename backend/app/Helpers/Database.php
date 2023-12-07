@@ -5,11 +5,9 @@ namespace Helpers;
 require __DIR__ . '/../../autoloader.php';
 
 use PDO;
-use Helpers\Debug;
 
 class Database
 {
-
     protected PDO|null $connection = null;
 
     public function __construct()
@@ -24,7 +22,13 @@ class Database
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ];
 
-        $this->connection = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=$charset", $user, $pass, $options);
+        try {
+            $this->connection = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=$charset", $user, $pass, $options);
+
+        } catch (\Throwable $e) {
+
+            json_encode(['database' => $e->getMessage()]);
+        }
 
         $this->getConnection();
 
@@ -36,9 +40,6 @@ class Database
     public function init()
     {
         $dbSql = file_get_contents(__DIR__ . '/../../db.sql');
-
-
-
         $this->connection->exec($dbSql);
     }
 }

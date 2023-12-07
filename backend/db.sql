@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `products`;
 CREATE TABLE IF NOT EXISTS products (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
-    `sku` VARCHAR(255) NOT NULL,
+    `sku` VARCHAR(255) NOT NULL UNIQUE,
     `price` VARCHAR(255) NOT NULL,
     `type` VARCHAR(255) NOT NULL,
     `attribute_name` VARCHAR(255) NULL,

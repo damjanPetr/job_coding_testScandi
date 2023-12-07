@@ -4,9 +4,10 @@
 
 body {
   font-family: "Plus Jakarta Sans", sans-serif;
+  // background: linear-gradient(220.55deg, #fff6eb 0%, #dfd1c5 100%);
 }
 main {
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 198px);
   padding: 10px 36px;
 }
 
@@ -15,5 +16,20 @@ footer {
   align-items: inherit;
   justify-content: center;
   padding: 16px;
-  border: 1px solid #000;
+  .inner_container {
+    width: 100%;
+    border-top: 4px solid #000;
+    p {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+}
+@media screen and (min-width: 1200px) {
+  main {
+    width: 50%;
+    margin: 0 auto;
+  }
 }
